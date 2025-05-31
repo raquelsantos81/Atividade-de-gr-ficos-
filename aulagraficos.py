@@ -2,32 +2,40 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
-
-st.set_page_config(page_title="Preferência de Cores", layout="centered")
-st.title("🎨 Preferência de Cores nas Roupas do Armário")
-st.markdown("Veja quais são as cores mais presentes no seu guarda-roupa!")
+st.set_page_config(page_title="Dashboard de Estilo", layout="wide")
 
 
-arquivo = st.file_uploader("📁 Envie seu arquivo CSV de preferências de cores:", type=["csv"])
+st.title("👗 Dashboard: Preferências de Cores no Armário")
+st.markdown("Este painel mostra a distribuição das cores de roupas no armário.")
 
-if arquivo is not None:
-    df = pd.read_csv(arquivo)
-    st.write("📊 Dados carregados:")
+
+df = pd.read_csv("preferencia_cores.csv")
+
+
+col1, col2 = st.columns(2)
+
+with col1:
+    st.subheader("📊 Tabela de Dados")
     st.dataframe(df)
 
-    
+with col2:
+    st.subheader("🎨 Gráfico de Pizza")
     fig, ax = plt.subplots()
-    cores = plt.cm.Paired.colors  # Cores bonitas e distintas
+    cores = plt.cm.Paired.colors
     ax.pie(
-        df["Peças no Armário"], 
-        labels=df["Cor"], 
-        autopct="%1.1f%%", 
+        df["Peças no Armário"],
+        labels=df["Cor"],
+        autopct="%1.1f%%",
         startangle=140,
         colors=cores,
-        wedgeprops={"edgecolor": "black", "linewidth": 1}
+        wedgeprops={"edgecolor": "black"}
     )
-    ax.set_title("Distribuição das Cores no Armário", fontsize=14)
+    ax.set_title("Distribuição das Cores no Armário")
     st.pyplot(fig)
 
-else:
-    st.warning("Por favor, envie o arquivo `preferencia_cores.csv`.")
+
+st.markdown("---")
+st.subheader("📈 Estatísticas")
+st.write(f"**Total de peças:** {df['Peças no Armário'].sum()}")
+st.write(f"**Cor mais presente:** {df.loc[df['Peças no Armário'].idxmax(), 'Cor']}")
+st.write(f"**Cor menos presente:** {df.loc[df['Peças no Armário'].idxmin(), 'Cor']}")
