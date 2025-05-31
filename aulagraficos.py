@@ -2,16 +2,17 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
+# Configurações da página
 st.set_page_config(page_title="Dashboard de Estilo", layout="wide")
 
-
+# Cabeçalho
 st.title("👗 Dashboard: Preferências de Cores no Armário")
 st.markdown("Este painel mostra a distribuição das cores de roupas no armário.")
 
-
+# Leitura do arquivo CSV (interno ao projeto)
 df = pd.read_csv("preferencia_cores.csv")
 
-
+# Layout em colunas
 col1, col2 = st.columns(2)
 
 with col1:
@@ -33,9 +34,9 @@ with col2:
     ax.set_title("Distribuição das Cores no Armário")
     st.pyplot(fig)
 
-
+# Estatísticas simples
 st.markdown("---")
 st.subheader("📈 Estatísticas")
 st.write(f"**Total de peças:** {df['Peças no Armário'].sum()}")
 st.write(f"**Cor mais presente:** {df.loc[df['Peças no Armário'].idxmax(), 'Cor']}")
-st.write(f"**Cor menos presente:** {df.loc[df['Peças no Armário'].idxmin(), 'Cor']}")
+st.write(f"**Cor menos presente:** {df.loc[df['Peças no Armário'].idxmin(), 'Cor']}"
